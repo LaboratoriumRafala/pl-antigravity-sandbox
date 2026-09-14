@@ -1,0 +1,11 @@
+# =====================================================
+# WHITELIST DOMEN — Profil: MCP (Google Cloud)
+# =====================================================
+# Domeny dodatkowe wymagane przez Google Cloud MCP
+# (Model Context Protocol — notebooks, wizualizacje, data agent).
+# Te domeny są ładowane PONAD whitelist-base.txt.
+
+# Google Cloud Console i dokumentacja
+cloud.google.com
+docs.cloud.google.com
+cloudresourcemanager.googleapis.com

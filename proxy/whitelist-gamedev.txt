@@ -1,0 +1,9 @@
+# =====================================================
+# WHITELIST DOMEN — Profil: GameDev (Godot Engine)
+# =====================================================
+# Domeny dodatkowe wymagane przez silnik Godot
+# (pobieranie wtyczek, assetów, dokumentacji).
+# Te domeny są ładowane PONAD whitelist-base.txt.
+
+# Godot Asset Library i dokumentacja
+godotengine.org

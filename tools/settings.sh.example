@@ -1,0 +1,29 @@
+#!/bin/bash
+# ==============================================================================
+# settings.sh — Twoje lokalne ustawienia projektu Sandbox
+# ==============================================================================
+# Skopiuj ten plik:  cp tools/settings.sh.example tools/settings.sh
+# Następnie uzupełnij wartości poniżej swoimi danymi.
+#
+# UWAGA: Plik settings.sh jest w .gitignore — Twoje dane NIE trafią do Gita.
+# ==============================================================================
+
+# --- Konta systemowe ---
+# U1 = Twoje główne konto na Linuksie (administracyjne, osobiste)
+# U2 = Osobne konto deweloperskie (izolowane od Twojej sesji graficznej)
+U1_USER="twoja_nazwa_konta_glownego"
+U2_USER="twoja_nazwa_konta_deweloperskiego"
+
+# --- sync-sandbox-to-u2.sh ---
+# Gdzie na U2 skopiować cały sandbox (Containerfile, proxy/, run-sandbox.sh...)
+DEST="/home/$U2_USER/Projekty/nazwa-folderu-na-u2"
+
+# --- sync-workspace-*.sh ---
+# Nazwa projektu wewnątrz workspace/
+PROJECT_NAME="nazwa-projektu"
+
+# Twoja lokalna kopia projektu na U1 (gdzie robisz git push)
+U1_WORKSPACE="/home/$U1_USER/Projekty/$PROJECT_NAME"
+
+# Workspace agenta na U2 (pełna ścieżka do folderu projektu wewnątrz sandboxa)
+U2_WORKSPACE="$DEST/workspace/$PROJECT_NAME"

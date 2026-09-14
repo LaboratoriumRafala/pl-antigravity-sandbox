@@ -1,0 +1,73 @@
+# =====================================================
+# WHITELIST DOMEN — BAZA (wspólna dla wszystkich profili)
+# =====================================================
+# Domeny wymagane przez Antigravity IDE do działania.
+# Każdy profil dziedziczy te domeny i może dodać własne
+# w pliku whitelist-<profil>.txt.
+#
+# Po zmianie, zrestartuj środowisko (./run-sandbox.sh).
+
+# =====================================================
+# ANTIGRAVITY IDE — Wymagane do działania
+# =====================================================
+
+# OAuth (jednorazowe logowanie do konta Google)
+accounts.google.com
+accounts.google.pl
+oauth2.googleapis.com
+oauthaccountmanager.googleapis.com
+accountcapabilities-pa.googleapis.com
+www.googleapis.com
+www.google.com
+www.google.pl
+myaccount.google.com
+lh3.googleusercontent.com
+lh3.google.com
+policies.google.com
+apis.google.com
+clients1.google.com
+accounts.youtube.com
+fonts.googleapis.com
+
+# Serwery API Antigravity (Gemini, agenci, feedback)
+cloudcode-pa.googleapis.com
+daily-cloudcode-pa.googleapis.com
+autopush-cloudcode-pa.sandbox.googleapis.com
+preprod-daily-cloudcode-pa.sandbox.googleapis.com
+feedback-pa.googleapis.com
+play.googleapis.com
+antigravity-unleash.goog
+clients2.googleusercontent.com
+
+# Strona główna Antigravity (auth callback, auto-aktualizacje)
+antigravity.google
+antigravity-ide-auto-updater-974169037036.us-central1.run.app
+antigravity-auto-updater-insider-974169037036.us-central1.run.app
+
+# Zasoby statyczne i pomocnicze Google (fonty, ikony, walidacja sesji)
+fonts.gstatic.com
+ssl.gstatic.com
+www.gstatic.com
+dl.google.com
+clients2.google.com
+clientservices.googleapis.com
+android.clients.google.com
+play.google.com
+optimizationguide-pa.googleapis.com
+ogs.google.com
+translate.googleapis.com
+passwordsleakcheck-pa.googleapis.com
+www.googletagmanager.com
+ogads-pa.clients6.google.com
+
+# VS Code Marketplace (rozszerzenia IDE)
+open-vsx.org
+openvsx.eclipsecontent.org
+main.vscode-cdn.net
+
+# =====================================================
+# REPOZYTORIA PAKIETÓW (apt)
+# =====================================================
+archive.ubuntu.com
+security.ubuntu.com
+
