@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# ==============================================================================
+# godot-stop: Wymusza bezpieczne zamknięcie silnika Godot z aktywnym czekaniem
+# ==============================================================================
+
+# Zabezpieczenie przed "niecierpliwym" użytkownikiem (np. wciśnięcie Ctrl+C)
+trap 'echo -e "\n[!] Przerwano przez użytkownika. Wymuszam natychmiastowe zabicie Godota (SIGKILL)..."; pkill -9 -x godot; exit 0' INT
+
+# Sprawdzenie czy Godot działa (dopasowanie nazwy procesu, nie linii poleceń)
+if ! pgrep -x godot > /dev/null; then
+    exit 0
+fi
+
+echo "Zamykanie silnika Godot (oczekiwanie na zakończenie procesu)..."
+echo "💡 Aby wymusić natychmiastowe zamknięcie: wciśnij [Ctrl+C]."
+
+# Wysłanie sygnału SIGTERM do głównego procesu Godot
+MAIN_PID=$(pgrep -ox godot)
+if [ -n "$MAIN_PID" ]; then
+    kill -TERM "$MAIN_PID"
+fi
+
+# Aktywne czekanie (bez sztywnego limitu - użytkownik decyduje)
+SECONDS_WAITED=0
+while pgrep -x godot > /dev/null; do
+    sleep 1
+    ((SECONDS_WAITED++))
+    
+    # Co 10 sekund przypominaj użytkownikowi, że może to przerwać
+    if (( SECONDS_WAITED % 10 == 0 )); then
+        echo "⏳ Oczekiwanie na zamknięcie trwa już $SECONDS_WAITED sekund... (Wciśnij Ctrl+C aby wymusić SIGKILL)"
+    fi
+done
+
+echo "✅ Godot zamknięty (proces zakończony)."

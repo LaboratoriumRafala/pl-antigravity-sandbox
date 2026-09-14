@@ -1,0 +1,4 @@
+   godot-start     - Uruchamia w tle silnik Godot
+   godot-stop      - Wyłącza Godota (obsługuje bezpieczne zamykanie i Ctrl+C)
+   godot-logs      - Podgląd logów Godota na żywo
+   godot-logs-full - Pełny zrzut logów Godota

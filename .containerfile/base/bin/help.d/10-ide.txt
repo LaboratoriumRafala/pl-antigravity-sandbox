@@ -1,0 +1,4 @@
+   ide-start       - Uruchamia w tle IDE Antigravity
+   ide-stop        - Wyłącza IDE (obsługuje bezpieczne zamykanie i Ctrl+C)
+   ide-logs        - Podgląd logów IDE na żywo
+   ide-logs-full   - Pełny zrzut logów IDE

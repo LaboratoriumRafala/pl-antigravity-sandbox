@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Ochrona przed podwójnym uruchomieniem
+if pgrep -x godot > /dev/null; then
+    echo "⚠️  Godot już działa. Użyj 'godot-stop' aby zatrzymać bieżącą instancję."
+    exit 0
+fi
+
+# Zliczamy projekty Godot w /workspace (do głębokości 2)
+# Używamy mapfile by bezpiecznie obsłużyć spacje w nazwach ścieżek
+mapfile -t PROJECTS < <(find /workspace -maxdepth 2 -name "project.godot" -type f 2>/dev/null)
+PROJECT_COUNT=${#PROJECTS[@]}
+
+if [ "$PROJECT_COUNT" -eq 1 ]; then
+    PROJECT_FILE="${PROJECTS[0]}"
+    echo "🎮 Znaleziono dokładnie jeden projekt: $PROJECT_FILE. Otwieram edytor."
+    nohup godot --editor --path "$(dirname "$PROJECT_FILE")" > /tmp/godot.log 2>&1 &
+else
+    if [ "$PROJECT_COUNT" -eq 0 ]; then
+        echo "🎮 Brak projektów w /workspace. Uruchamiam Project Manager."
+    else
+        echo "🎮 Znaleziono wiele projektów ($PROJECT_COUNT). Uruchamiam Project Manager (wybierz z listy ostatnio otwieranych)."
+    fi
+    # Bez argumentów Godot otworzy Project Managera (z zachowaną historią z ~/.config)
+    nohup godot > /tmp/godot.log 2>&1 &
+fi

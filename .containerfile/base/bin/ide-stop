@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# ==============================================================================
+# ide-stop: Wymusza bezpieczne zamknięcie IDE z aktywnym czekaniem (Polling)
+# ==============================================================================
+
+# Zabezpieczenie przed "niecierpliwym" użytkownikiem (np. wciśnięcie Ctrl+C)
+# Jeśli użytkownik wciśnie Ctrl+C w trakcie czekania, natychmiast ubijamy IDE.
+trap 'echo -e "\n[!] Przerwano przez użytkownika. Wymuszam natychmiastowe zabicie (SIGKILL)..."; pkill -9 -f antigravity-ide; exit 0' INT
+
+# Jeśli proces IDE nie istnieje, zakończ od razu.
+if ! pgrep -f antigravity-ide > /dev/null; then
+    exit 0
+fi
+
+echo "Zamykanie IDE (oczekiwanie na zakończenie procesu)..."
+echo "💡 Aby wymusić natychmiastowe zamknięcie: wciśnij [Ctrl+C]."
+
+# Wysłanie sygnału SIGTERM TYLKO do Głównego Procesu (Main Process)
+# Zabicie wszystkich procesów na raz powoduje crash renderera i okienko błędu.
+MAIN_PID=$(pgrep -o -f "antigravity-ide")
+if [ -n "$MAIN_PID" ]; then
+    kill -TERM "$MAIN_PID"
+fi
+
+# Aktywne czekanie (bez sztywnego limitu - użytkownik decyduje)
+SECONDS_WAITED=0
+while pgrep -f antigravity-ide > /dev/null; do
+    sleep 1
+    ((SECONDS_WAITED++))
+    
+    # Co 10 sekund przypominaj użytkownikowi, że może to przerwać
+    if (( SECONDS_WAITED % 10 == 0 )); then
+        echo "⏳ Oczekiwanie na zamknięcie trwa już $SECONDS_WAITED sekund... (Wciśnij Ctrl+C aby wymusić SIGKILL)"
+    fi
+done
+
+echo "✅ IDE zamknięte (proces zakończony)."

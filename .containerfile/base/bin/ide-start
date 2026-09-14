@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Ochrona przed podwójnym uruchomieniem
+if pgrep -f antigravity-ide > /dev/null; then
+    echo "⚠️  IDE już działa. Użyj 'ide-stop' aby zatrzymać bieżącą instancję."
+    exit 0
+fi
+
+nohup antigravity-ide > /tmp/ide.log 2>&1 &
