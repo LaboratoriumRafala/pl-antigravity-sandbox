@@ -20,6 +20,7 @@ Każdy plik jest ładowany przez `source` i może dopisywać elementy do tablicy
 | Profil | Plik | Co dodaje |
 |---|---|---|
 | `base` | `base/10-display.sh` | Autodetekcja grafiki (Wayland / X11) |
+| `base` | `base/20-gpu.sh` | Autodetekcja GPU (`/dev/dri` lub `/dev/dxg`) |
 | `gamedev` | `gamedev/10-audio.sh` | Socket PulseAudio (dźwięk) |
 | `webdev` | `webdev/20-ports.sh` | Porty 8080, 4200 (przykład) |
 | `ai` | `ai/30-gpu.sh` | Specjalny dostęp do akceleratorów (przykład) |

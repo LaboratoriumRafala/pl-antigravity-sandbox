@@ -298,7 +298,6 @@ podman run -it --rm --name "$CONTAINER_SANDBOX" \
     --hostname "$PROJECT_ID" \
     --dns none \
     --security-opt=no-new-privileges \
-    --device /dev/dri \
     -e GTK_USE_PORTAL=0 \
     -e ELECTRON_NO_SANDBOX=1 \
     -e SANDBOX_PROFILE="$PROFILE" \

@@ -4,15 +4,32 @@ Wyizolowane, przenośne środowisko deweloperskie oparte na Podmanie, przygotowa
 
 Architektura opiera się na modelu **Zero-Trust Egress**, chroniąc system operacyjny i sieć domową przed wyciekiem danych (Data Exfiltration) oraz niekontrolowanym uruchamianiem pobranego kodu.
 
-## 📋 Spis treści
+## Spis treści
+- [Quick Start](#quick-start)
 - [Dlaczego to rozwiązanie jest bezpieczne?](#dlaczego-to-rozwiązanie-jest-bezpieczne)
 - [Struktura folderu](#struktura-folderu)
 - [Architektura: 1 projekt = 1 folder](#architektura-1-projekt--1-folder)
 - [Instrukcja uruchomienia](#instrukcja-uruchomienia)
 - [Rozszerzanie i modyfikowanie](#rozszerzanie-i-modyfikowanie)
-- [Uwagi na przyszłość](#uwagi-na-przyszłość)
 
-## 📌 Dlaczego to rozwiązanie jest bezpieczne?
+## Quick Start
+
+```bash
+git clone https://github.com/LaboratoriumRafala/pl-antigravity-sandbox
+cd pl-antigravity-sandbox
+```
+
+Umieść Antigravity IDE w folderze projektu (szczegóły → [Krok 2: Umieść IDE](#krok-2-umieść-ide)), a następnie uruchom:
+
+```bash
+chmod +x run-sandbox.sh
+./run-sandbox.sh
+```
+
+> [!NOTE]
+> Wymagany jest Linux z zainstalowanym Podmanem. Użytkownik Windowsa? Zobacz [README-WINDOWS.md](README-WINDOWS.md).
+
+## Dlaczego to rozwiązanie jest bezpieczne?
 
 Standardowe środowiska (nawet oparte o Dockera) ograniczają się do izolacji systemu plików. Jeśli Agent LLM pobierze skrypt, który spróbuje połączyć się z serwerem Command&Control lub pobrać dodatkowy malware, standardowy kontener mu na to pozwoli.
 
@@ -59,9 +76,12 @@ Bez tych capabilities IDE zamraża się lub crashuje po zalogowaniu. Standardowa
 - ❌ Podmienić plików IDE (zamontowane jako read-only)
 - ❌ Przetrwać restart — kontener jest efemeryczny (`--rm`)
 
+> [!NOTE]
+> Bezpieczeństwo tego sandboxa **nie opiera się na niewiedzy agenta** (Security by Obscurity). Nawet jeśli agent przeczyta cały kod źródłowy tego projektu (np. znajdzie go na GitHubie), nie pomoże mu to w ucieczce — zabezpieczenia działają na poziomie jądra Linux (namespaces), konfiguracji sieci (brak routingu) i systemu plików (read-only mounts).
+
 ---
 
-## 📁 Struktura folderu
+## Struktura folderu
 
 ```
 pl-antigravity-sandbox/               ← Na hoście (NIE ZAMONTOWANY w kontenerze)
@@ -116,7 +136,7 @@ pl-antigravity-sandbox/               ← Na hoście (NIE ZAMONTOWANY w kontener
 
 ---
 
-## 🏗️ Architektura: 1 projekt = 1 folder
+## Architektura: 1 projekt = 1 folder
 
 Ten folder (`pl-antigravity-sandbox/`) służy jako szablon. Aby uniknąć zakażeń krzyżowych pamięci AI między projektami, stosuj zasadę: jeden projekt = jeden folder sandboxa.
 
@@ -133,7 +153,7 @@ Agent ma odcięty dostęp do GitHuba (usunięty z białej listy) i nie może rob
 
 ---
 
-## 🚀 Instrukcja uruchomienia
+## Instrukcja uruchomienia
 
 ### Wymagania:
 - Linux (np. Ubuntu, Mint)
@@ -299,7 +319,7 @@ Po zalogowaniu i przejściu kreatora konfiguracji, możesz bezpiecznie ustawić 
 
 ---
 
-## 🛠️ Rozszerzanie i modyfikowanie
+## Rozszerzanie i modyfikowanie
 
 ### 1. Agent nie może połączyć się z jakimś serwisem?
 Otwórz `proxy/whitelist.txt` i dodaj brakującą domenę. Zrestartuj środowisko.
@@ -336,19 +356,3 @@ Zobaczysz listę WSZYSTKICH żądań sieciowych z oznaczeniem, które zostały p
 > [!TIP]
 > Nazwy kontenerów i sieci zawierają nazwę folderu sandboxa (np. `proxy-gamedev-project1`, `sandbox-internal-gamedev-project1`). Dzięki temu możesz uruchamiać wiele sandboxów równolegle bez konfliktów. Lista aktywnych kontenerów: `podman ps`.
 
----
-
-## 🔮 Uwagi na przyszłość
-
-> [!NOTE]
-> Bezpieczeństwo tego sandboxa **nie opiera się na niewiedzy agenta** (Security by Obscurity). Nawet jeśli agent przeczyta cały kod źródłowy tego projektu (np. znajdzie go na GitHubie), nie pomoże mu to w ucieczce — zabezpieczenia działają na poziomie jądra Linux (namespaces), konfiguracji sieci (brak routingu) i systemu plików (read-only mounts).
-
-### Wsparcie Windows (WSL2)
-
-Sandbox jest zbudowany na Linuksie (Podman, sieci `--internal`, X11/Wayland). Jednak Windows 11 oferuje **WSL2** (Windows Subsystem for Linux) — lekką maszynę wirtualną z pełnym jądrem Linuxa, w której można zainstalować Podman i uruchamiać kontenery. WSL2 posiada również **WSLg** — wbudowany serwer graficzny (Wayland + XWayland), który pozwala wyświetlać okna linuksowe na pulpicie Windows.
-
-Teoretycznie pozwala to uruchomić ten sandbox na Windowsie, ale wymaga dostosowania:
-- Sieciowanie WSL2 działa inaczej (wirtualny NAT) — flaga `--internal` może zachowywać się inaczej
-- GPU passthrough jest obsługiwany przez WSLg (`/dev/dxg`), nie przez `/dev/dri` (obecnie zahardkodowane w `run-sandbox.sh`)
-- Ścieżki gniazd graficznych i audio w WSLg znajdują się w `/mnt/wslg/`, nie w standardowych lokalizacjach Linuksa
-- Żaden z powyższych scenariuszy nie został przetestowany

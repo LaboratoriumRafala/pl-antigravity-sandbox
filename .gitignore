@@ -1,0 +1,22 @@
+# .gitignore - wyklucz pliki prywatne z repozytorium Git
+
+# Dane persystentne IDE (loginy, historia czatów, wtyczki)
+antigravity-userdata/
+
+# Generowana whitelist (źródła: whitelist-base.txt + whitelist-<profil>.txt)
+proxy/whitelist.txt
+
+# Pliki robocze agenta (opcjonalnie - możesz to usunąć jeśli chcesz wersjonować kod gry)
+workspace/
+
+# Binarka IDE (pobierana osobno)
+Antigravity IDE/
+
+# Pliki tymczasowe
+tmp/
+
+# Prywatna konfiguracja użytkownika (tworzona z tools/settings.sh.example)
+tools/settings.sh
+
+# Konfiguracja i reguły dla Agentów AI (np. lokalne personalia Antigravity)
+.agents
